@@ -39,7 +39,8 @@ void compile_to_c(char* filename){
     char* path = (char *) malloc((length_path+1)*sizeof(char));
     strncpy(path, CMP_PATH, length_path);
     path[length_path] = '\0';
-    strcat(path, file_name_c(filename));
+    char* temp = file_name_c(filename);
+    strcat(path, temp);
 
     FILE* file = fopen(path, "w");
     fprintf(file, "#include <assert.h>\n#include <stdlib.h>\n#include <stdint.h>\n#include <stdio.h>\n#include <string.h>\n\n");
@@ -87,6 +88,8 @@ void compile_to_c(char* filename){
     }
     fprintf(file, "    return EXIT_SUCCESS;\n");
     fprintf(file, "}\n\n");
+    free(path);
+    free(temp);
     free_input_prog(input_prog);
     fclose(file);
 }
