@@ -50,4 +50,3 @@ void free_loops(void* loops);
  */
 void execute_instruction(char** ipp, uint8_t** dpp, void* loops);
 
-void compile_to_c(char* input_prog);
