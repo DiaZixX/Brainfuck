@@ -94,8 +94,8 @@ void compile_to_c(char* filename){
     fclose(file);
 }
 
-int main(int agrc, char* argv[]){
-    if (agrc != 2){
+int main(int argc, char* argv[]){
+    if (argc != 2){
         printf("Veuillez entrer le nom du fichier contenant le programme brainfuck\n");
         printf("La commande correcte est ./compile <nom du fichier>.bf\n");
         return EXIT_FAILURE;
