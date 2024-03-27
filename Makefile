@@ -14,7 +14,7 @@ SRC_CMP = $(SRC_DIR)/compiler.c $(SRC_DIR)/brainfuck_helper.c
 OBJ_CMP = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_CMP))
 
 SRC_SYN = $(SRC_DIR)/syntax.c $(SRC_DIR)/brainfuck_helper.c $(SRC_DIR)/stack.c
-OBJ_SYN = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_CMP))
+OBJ_SYN = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_SYN))
 
 # Cree bin et compiled s'ils n'existent pas
 $(shell mkdir -p $(OBJ_DIR))
@@ -38,5 +38,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 clean:
 	rm -f $(TARGET)
 	rm -f $(CMP_TARGET)
+	rm -f $(SYN_TARGET)
 	rm -r $(OBJ_DIR)
 	rm -r $(CMP_DIR)

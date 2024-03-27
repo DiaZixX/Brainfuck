@@ -20,7 +20,7 @@ bool syntax_analysis(char* filename){
                 break;
             case ']' :
                 if (is_empty(lifo)){
-                    printf("Unexpected loop closure ']' at position : %d\n", input_prog[i], i);
+                    printf("Unexpected loop closure ']' at position : %i\n", i);
                     free_stack(lifo);  
                     return false;
                 }
@@ -55,10 +55,12 @@ int main(int argc, char* argv[]){
 
     bool ret = syntax_analysis(argv[1]);
 
-    if (!ret){
+    if (ret){
         printf("The code is syntactically correct\n");
+        return EXIT_SUCCESS;
+    }
+    else {
+        printf("Code can't be compiled\n");
         return EXIT_FAILURE;
     }
-
-    return EXIT_SUCCESS;
 }
