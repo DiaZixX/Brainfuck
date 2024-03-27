@@ -24,4 +24,4 @@ In this section, I translate the Brainfuck program given as C input in a `Compil
 
 ## Syntax analysis
 
-Work In Progress
+In this section, I check if the code is syntactically correct.
