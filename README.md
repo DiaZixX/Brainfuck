@@ -9,7 +9,7 @@ A Makefile is available, here are the commands :
 - `make` : Compile all parts of this project
 - `make compiler` : Compiles only the compiler part
 - `make interpreter` : Compiles only the interpreter part
-- `make syntax` : Work In Progress
+- `make syntax` : Compiles only the syntax part
 - `make clean` : Cleans up everything created by the makefile
 
 All the binaries are generated in a `Bin/` subfolder.
@@ -20,7 +20,8 @@ In this section, I filter the Brainfuck program on the input side to give the sa
 
 ## Compiler 
 
-In this section, I translate the Brainfuck program given as C input in a `Compiled/` subfolder.
+In this section, I translate the Brainfuck program given as C or Python input in a `Compiled/` subfolder.
+The command is : `./compiler c <name_of_file>` or `./compiler python <name_of_file>`.
 
 ## Syntax analysis
 
