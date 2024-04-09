@@ -22,6 +22,25 @@ char* file_name_c(char* filename){
 }
 
 /**
+ * @brief Renvoie le meme nom de fichier brainfuck en .py
+ * 
+ * @param filename nom du fichier contenant le programme brainfuck
+ * 
+ * @return le nom en .py
+*/
+char* file_name_py(char* filename){
+    int length = strlen(filename);
+    char* new_name = (char *) malloc((length+1)*sizeof(char));
+    for (int i = 0; i < length ; i++){
+        new_name[i] = filename[i];
+    }
+    new_name[length-2] = 'p';
+    new_name[length-1] = 'y';
+    new_name[length] = '\0';
+    return new_name;
+}
+
+/**
  * @brief Compile en C le programme brainfuck
  * 
  * @param filename nom du programme brainfuck a compiler en C
@@ -94,14 +113,92 @@ void compile_to_c(char* filename){
     fclose(file);
 }
 
+/**
+ * @brief Compile en Python le programme brainfuck
+ * 
+ * @param filename nom du programme brainfuck a compiler en Python
+*/
+void compile_to_py(char* filename){
+    char* input_prog = get_input_prog(filename);
+    char* ip = input_prog;
+
+    if (ip == NULL){
+        printf("Le fichier Brainfuck passé en paramètre n'existe pas dans le répertoire courant\n");
+        exit(0);
+    }
+
+    int length_path = strlen(CMP_PATH);
+    char* path = (char *) malloc((length_path+1)*sizeof(char));
+    strncpy(path, CMP_PATH, length_path);
+    path[length_path] = '\0';
+    char* temp = file_name_py(filename);
+    strcat(path, temp);
+
+    FILE* file = fopen(path, "w");
+    fprintf(file, "#!/usr/bin/env python3\n\n");
+    fprintf(file, "DATA_ARRAY_SIZE = 32000\n\n");
+    fprintf(file, "def main():\n");
+    fprintf(file, "    data_array = [0 for _ in range(DATA_ARRAY_SIZE)]\n    i = 0\n");
+    int i = 0;
+    int indent = 1;
+    while (input_prog[i] != '\0'){
+        for (int a = 0; a < indent; a++)
+            fprintf(file, "    ");
+        switch (input_prog[i]){
+            case '>':
+                fprintf(file, "i += 1\n");
+                break;
+            case '<':
+                fprintf(file, "i -= 1\n");
+                break;
+            case '+':
+                fprintf(file, "data_array[i] = (data_array[i] + 1) %% 256\n");
+                break;
+            case '-':
+                fprintf(file, "data_array[i] = (data_array[i] - 1) %% 256\n");
+                break;
+            case '.':
+                fprintf(file, "print(chr(data_array[i]), end=\"\")\n");
+                break;
+            case ',':
+                fprintf(file, "data_array[i] = int(ord(input('').split(\" \")[0])) %% 256\n");
+                break;
+            case '[': 
+                fprintf(file, "while data_array[i] != 0 :\n");
+                indent++;
+                break;
+            case ']':
+                fprintf(file, "\n");
+                indent--;
+                break;
+            }
+        i++;
+    }
+    fprintf(file, "\nif __name__ == '__main__' :\n    main()\n\n");
+    free(path);
+    free(temp);
+    free_input_prog(input_prog);
+    fclose(file);
+}
+
 int main(int agrc, char* argv[]){
-    if (agrc != 2){
+    if (agrc != 3){
         printf("Veuillez entrer le nom du fichier contenant le programme brainfuck\n");
-        printf("La commande correcte est ./compile <nom du fichier>.bf\n");
+        printf("La commande correcte est ./compiler <language> <nom du fichier>.bf\n");
         return EXIT_FAILURE;
     }
 
-    compile_to_c(argv[1]);
+    if (strcmp(argv[1], "python") == 0){
+        compile_to_py(argv[2]);
+    }
+    else if (strcmp(argv[1], "c") == 0){
+        compile_to_c(argv[2]);
+    }
+    else {
+        printf("Arguments invalides !\n");
+        printf("La commande correcte est ./compiler <language> <nom du fichier>.bf\n");
+        return EXIT_FAILURE;
+    }
 
     return EXIT_SUCCESS;
 }
