@@ -10,6 +10,7 @@ A Makefile is available, here are the commands :
 - `make compiler` : Compiles only the compiler part
 - `make interpreter` : Compiles only the interpreter part
 - `make syntax` : Compiles only the syntax part
+- `make test` : Runs tests on everything
 - `make clean` : Cleans up everything created by the makefile
 
 All the binaries are generated in a `Bin/` subfolder.

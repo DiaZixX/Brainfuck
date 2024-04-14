@@ -2,6 +2,7 @@
 #include "brainfuck_helper.h"
 
 #define CMP_PATH "Compiled/"
+#define SRC_PATH "Test/"
 
 /**
  * @brief Renvoie le meme nom de fichier brainfuck en .c
@@ -12,12 +13,13 @@
 */
 char* file_name_c(char* filename){
     int length = strlen(filename);
-    char* new_name = (char *) malloc((length)*sizeof(char));
-    for (int i = 0; i < length - 1; i++){
-        new_name[i] = filename[i];
+    int src_length = strlen(SRC_PATH);
+    char* new_name = (char *) malloc((length-src_length)*sizeof(char));
+    for (int i = src_length; i < length - 1; i++){
+        new_name[i-src_length] = filename[i];
     }
-    new_name[length-2] = 'c';
-    new_name[length-1] = '\0';
+    new_name[length-2-src_length] = 'c';
+    new_name[length-1-src_length] = '\0';
     return new_name;
 }
 
@@ -30,13 +32,14 @@ char* file_name_c(char* filename){
 */
 char* file_name_py(char* filename){
     int length = strlen(filename);
-    char* new_name = (char *) malloc((length+1)*sizeof(char));
-    for (int i = 0; i < length ; i++){
-        new_name[i] = filename[i];
+    int src_length = strlen(SRC_PATH);
+    char* new_name = (char *) malloc((length+1-src_length)*sizeof(char));
+    for (int i = src_length; i < length ; i++){
+        new_name[i-src_length] = filename[i];
     }
-    new_name[length-2] = 'p';
-    new_name[length-1] = 'y';
-    new_name[length] = '\0';
+    new_name[length-2-src_length] = 'p';
+    new_name[length-1-src_length] = 'y';
+    new_name[length-src_length] = '\0';
     return new_name;
 }
 
